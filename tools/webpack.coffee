@@ -22,5 +22,5 @@ module.exports = (options) ->
 			path: path.resolve options.theme, 'dist'
 			publicPath:
 				if hmr
-				then 'http://localhost:' + port + options.themePublicPath
-				else options.themePublicPath
+				then 'http://localhost:' + port + options.themePublicPath + 'dist/'
+				else options.themePublicPath + 'dist/'
