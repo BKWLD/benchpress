@@ -18,6 +18,20 @@ class Webpack
     protected $webpack_manifest;
 
     /**
+     * Load the webpack manifest if found
+     * @return void
+     *
+     * @throws Bkwld\Camo\Exceptions\ManifestNotFound;
+     */
+    public function loadManifest() {
+        if (!$this->webpack_manifest) {
+            $manifest_path = get_template_directory().'/dist/manifest.json';
+            if (!file_exists($manifest_path)) throw new ManifestNotFound;
+            $this->webpack_manifest = json_decode(file_get_contents($manifest_path));
+        }
+    }
+
+    /**
      * Generate either a script (js) or link (css) tag using the manifest.json
      * file output by json.
      *
@@ -27,24 +41,15 @@ class Webpack
      *                      'app.js'
      * @return string|void  Either a script or link HTML string.  Or nothing if
      *                      the the $name coudln't be found.
-     *
-     * @throws Bkwld\Camo\Exceptions\ManifestNotFound;
      */
     public function webpackAssetTag($name)
     {
-
-        // Load the manifest
-        if (!$this->webpack_manifest) {
-            $manifest_path = get_template_directory().'/dist/manifest.json';
-            if (!file_exists($manifest_path)) throw new ManifestNotFound;
-            $this->webpack_manifest = json_decode(file_get_contents($manifest_path));
-        }
+        $this->loadManifest();
 
         // If the manifest contains a reference, generate a tag for it.  Otherwise
         // just use an empty string
-        list($key, $type) = explode('.', $name);
-        $tag = empty($this->webpack_manifest->$key->$type) ? ''
-            : $this->assetTag($type, $this->webpack_manifest->$key->$type);
+        $tag = empty($this->assetUrl($name)) ? ''
+            : $this->assetTag($type, $this->assetUrl($name));
 
         // Cache and return the tag
         return $tag;
@@ -63,6 +68,19 @@ class Webpack
             case 'js': return "<script src='$url' charset='utf-8'></script>";
             case 'css': return "<link href='$url' rel='stylesheet'>";
         }
+    }
+
+    /**
+     * Generate the url to the asset created by webpack
+     *
+     * @param  string $name The name of the asset
+     * @return string|void  The string of the URL
+     */
+    public function assetUrl($name)
+    {
+        $this->loadManifest();
+        list($key, $type) = explode('.', $name);
+        return $this->webpack_manifest->$key->$type;
     }
 
 }
