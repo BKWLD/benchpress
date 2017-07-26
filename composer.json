@@ -1,0 +1,18 @@
+{
+	"name": "bkwld/benchpress",
+	"description": "Wordpress boilerplate",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Bukwild",
+			"email": "info@bukwild.com"
+		}
+	],
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Bkwld\\Benchpress\\": "src/"
+		}
+	}
+}
