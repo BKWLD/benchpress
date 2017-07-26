@@ -12,7 +12,7 @@ module.exports = (options) ->
 		themePublicPath: '/wp-content/themes/site/'
 
 	# Pass Benchpress overrides as options to camo and return the webpack config
-	return camo ({hmr}) ->
+	return camo ({hmr, port}) ->
 
 		# Set context to the assets dir of the theme
 		context: path.resolve options.theme, 'assets'
