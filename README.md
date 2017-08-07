@@ -5,3 +5,7 @@
 3. Run `yarn init` to create a package.json.  Set the license to `UNLICENSED`
 4. Add Benchpress via `yarn add bkwld/benchpress`
 5. Run the setup: `yarn setup`
+
+...
+
+10. Activate the `Site` theme in the Wordpress admin
