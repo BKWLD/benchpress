@@ -80,6 +80,7 @@ class Webpack
     {
         $this->loadManifest();
         list($key, $type) = explode('.', $name);
+        if (empty($this->webpack_manifest->$key->$type)) return;
         return $this->webpack_manifest->$key->$type;
     }
 
